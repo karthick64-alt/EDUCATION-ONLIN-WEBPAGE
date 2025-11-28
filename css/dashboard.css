@@ -1,0 +1,199 @@
+/* Dashboard Styles */
+.dashboard-container {
+    min-height: calc(100vh - 76px);
+    background: #f9fafb;
+}
+
+.sidebar {
+    min-height: calc(100vh - 76px);
+    position: sticky;
+    top: 76px;
+    z-index: 100;
+}
+
+.sidebar .nav-link {
+    color: #6c757d;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary-color);
+}
+
+.sidebar .nav-link.active {
+    background: var(--gradient);
+    color: white;
+}
+
+.user-profile img {
+    border: 3px solid var(--primary-color);
+}
+
+.stat-card {
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.tab-pane {
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* Floating Action Button */
+.fab-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    border: none;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+.fab-btn:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4) !important;
+}
+
+.fab-btn i {
+    color: white;
+}
+
+/* Mobile and Tablet Responsive Styles */
+@media (max-width: 991px) {
+    .sidebar {
+        position: fixed;
+        top: 56px;
+        left: -100%;
+        width: 280px;
+        height: calc(100vh - 56px);
+        z-index: 1050;
+        transition: left 0.3s ease;
+        overflow-y: auto;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Admin dashboard sidebar adjustment */
+    .dashboard-container[style*="margin-top"] .sidebar {
+        top: 56px;
+    }
+    
+    .sidebar.show {
+        left: 0;
+    }
+    
+    .sidebar .sidebar-content {
+        padding: 1.5rem;
+    }
+    
+    .dashboard-container .row > .col-lg-9 {
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .dashboard-content {
+        padding: 1rem !important;
+    }
+    
+    /* Sidebar toggle button */
+    .sidebar-toggle {
+        display: block;
+        position: fixed;
+        top: 70px;
+        left: 15px;
+        z-index: 1051;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.5rem 0.75rem;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .sidebar-toggle:hover {
+        background: var(--primary-color);
+        opacity: 0.9;
+        transform: scale(1.05);
+    }
+    
+    .sidebar-toggle i {
+        font-size: 1.25rem;
+    }
+    
+    /* Admin dashboard specific adjustments */
+    .dashboard-container[style*="margin-top"] .sidebar-toggle {
+        top: 70px;
+    }
+    
+    .sidebar.bg-dark .sidebar-toggle {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    .sidebar.bg-dark .sidebar-toggle:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Overlay when sidebar is open */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 56px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 56px);
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1049;
+    }
+    
+    .sidebar-overlay.show {
+        display: block;
+    }
+}
+
+@media (max-width: 768px) {
+    .fab-btn {
+        width: 56px;
+        height: 56px;
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .sidebar {
+        width: 260px;
+    }
+    
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .sidebar {
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    .dashboard-content {
+        padding: 0.75rem !important;
+    }
+    
+    .stat-card .card-body {
+        padding: 1rem !important;
+    }
+}
+

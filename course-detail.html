@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Detail - EduMaster</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .course-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .rating {
+            color: #ffc107;
+        }
+        .course-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+        .price-section .original-price {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+        .nav-tabs .nav-link {
+            color: #6c757d;
+            border: none;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-tabs .nav-link.active {
+            color: #0d6efd;
+            border-bottom: 2px solid #0d6efd;
+            background: none;
+        }
+        .review-card {
+            border-left: 3px solid #0d6efd;
+            padding: 15px;
+            background: #f8f9fa;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .rating-input i {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .rating-input i:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html"><i class="bi bi-mortarboard-fill text-primary"></i> EduMaster</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="coursesDropdown" role="button" data-bs-toggle="dropdown">
+                            Courses
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="courses.html">All Courses</a></li>
+                            <li><a class="dropdown-item" href="courses.html?category=web">Web Development</a></li>
+                            <li><a class="dropdown-item" href="courses.html?category=design">Design</a></li>
+                            <li><a class="dropdown-item" href="courses.html?category=business">Business</a></li>
+                            <li><a class="dropdown-item" href="courses.html?category=marketing">Marketing</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="instructors.html">Instructors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <a href="cart.html" class="btn btn-link position-relative me-3">
+                        <i class="bi bi-cart3 fs-5"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">0</span>
+                    </a>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i> Account
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="student-dashboard.html">My Dashboard</a></li>
+                            <li><a class="dropdown-item" href="instructor-dashboard.html">Instructor Dashboard</a></li>
+                            <li><a class="dropdown-item" href="admin-dashboard.html">Admin Panel</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="login.html">Login</a></li>
+                            <li><a class="dropdown-item" href="signup.html">Sign Up</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Course Detail Section -->
+    <section class="course-detail-section py-5" style="margin-top: 76px;">
+        <div class="container">
+            <div class="row">
+                <!-- Main Content -->
+                <div class="col-lg-8">
+                    <!-- Course Header -->
+                    <div class="course-header card border-0 shadow-sm mb-4">
+                        <div class="card-body p-4">
+                            <span class="badge bg-white text-primary mb-2" id="courseCategory">Web Development</span>
+                            <h1 class="fw-bold mb-3" id="courseTitle">Complete Web Development Bootcamp</h1>
+                            <p class="lead mb-3" id="courseSubtitle">Learn Web Development by building 50+ projects</p>
+                            <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <span class="fw-bold me-1" id="courseRating">4.7</span>
+                                    <div class="rating" id="courseStars">★★★★★</div>
+                                    <span class="ms-2">(<span id="reviewCount">15,234</span> ratings)</span>
+                                </div>
+                                <span><i class="bi bi-people me-1"></i><span id="studentCount">125,000</span> students</span>
+                                <span><i class="bi bi-clock me-1"></i><span id="courseDuration">55 hours</span></span>
+                                <span><i class="bi bi-bar-chart me-1"></i><span id="courseLevel">Beginner</span></span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=Angela+Yu&size=50" alt="Instructor" class="rounded-circle me-2" id="instructorImage">
+                                <div>
+                                    <p class="mb-0">Created by <a href="#" class="text-white" id="instructorName">Angela Yu</a></p>
+                                    <small>Last updated <span id="lastUpdated">12/2024</span></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Video -->
+                    <div class="preview-video mb-4">
+                        <div class="ratio ratio-16x9">
+                            <iframe id="previewVideo" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <!-- Course Tabs -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body">
+                            <ul class="nav nav-tabs mb-3" id="courseTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button">Overview</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="curriculum-tab" data-bs-toggle="tab" data-bs-target="#curriculum" type="button">Curriculum</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="instructor-tab" data-bs-toggle="tab" data-bs-target="#instructor" type="button">Instructor</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button">Reviews</button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="courseTabContent">
+                                <!-- Overview Tab -->
+                                <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                                    <h4 class="fw-bold mb-3">What you'll learn</h4>
+                                    <div class="row mb-4" id="learningPoints">
+                                        <!-- Populated by JavaScript -->
+                                    </div>
+                                    <h4 class="fw-bold mb-3">Course Description</h4>
+                                    <p id="courseDescription">Loading...</p>
+                                </div>
+
+                                <!-- Curriculum Tab -->
+                                <div class="tab-pane fade" id="curriculum" role="tabpanel">
+                                    <div class="accordion" id="curriculumAccordion">
+                                        <!-- Populated by JavaScript -->
+                                    </div>
+                                </div>
+
+                                <!-- Instructor Tab -->
+                                <div class="tab-pane fade" id="instructor" role="tabpanel">
+                                    <div class="instructor-detail" id="instructorDetail">
+                                        <!-- Populated by JavaScript -->
+                                    </div>
+                                </div>
+
+                                <!-- Reviews Tab -->
+                                <div class="tab-pane fade" id="reviews" role="tabpanel">
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <h4 class="fw-bold mb-0">Student Reviews</h4>
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal">Write a Review</button>
+                                    </div>
+                                    <div id="reviewsList">
+                                        <!-- Populated by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <div class="course-sidebar card border-0 shadow-lg">
+                        <div class="card-body p-4">
+                            <div class="course-image mb-3">
+                                <img src="" alt="Course" class="img-fluid rounded" id="courseImage">
+                            </div>
+                            <div class="price-section mb-3">
+                                <div class="d-flex align-items-center">
+                                    <span class="h3 fw-bold text-primary mb-0" id="coursePrice">$89.99</span>
+                                    <span class="text-muted ms-2 original-price" id="originalPrice">$199.99</span>
+                                    <span class="badge bg-danger ms-2" id="discountBadge">55% OFF</span>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2 mb-3">
+                                <button class="btn btn-primary btn-lg" id="enrollBtn" onclick="addToCart()">
+                                    <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                                </button>
+                                <button class="btn btn-outline-danger" id="wishlistBtn" onclick="addToWishlist()">
+                                    <i class="bi bi-heart me-2"></i>Add to Wishlist
+                                </button>
+                            </div>
+                            <div class="course-includes mb-3">
+                                <h6 class="fw-bold mb-3">This course includes:</h6>
+                                <ul class="list-unstyled" id="courseIncludes">
+                                    <!-- Populated by JavaScript -->
+                                </ul>
+                            </div>
+                            <div class="text-center">
+                                <a href="#" class="text-decoration-none" onclick="shareArticle(); return false;">Share this course</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Review Modal -->
+    <div class="modal fade" id="reviewModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Write a Review</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reviewForm" onsubmit="submitReview(event)">
+                        <div class="mb-3">
+                            <label class="form-label">Rating</label>
+                            <div class="rating-input" id="ratingInput">
+                                <i class="bi bi-star fs-3 text-warning" data-rating="1" onclick="setRating(1)"></i>
+                                <i class="bi bi-star fs-3 text-warning" data-rating="2" onclick="setRating(2)"></i>
+                                <i class="bi bi-star fs-3 text-warning" data-rating="3" onclick="setRating(3)"></i>
+                                <i class="bi bi-star fs-3 text-warning" data-rating="4" onclick="setRating(4)"></i>
+                                <i class="bi bi-star fs-3 text-warning" data-rating="5" onclick="setRating(5)"></i>
+                            </div>
+                            <input type="hidden" id="selectedRating" value="5">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Review Title</label>
+                            <input type="text" class="form-control" id="reviewTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Your Review</label>
+                            <textarea class="form-control" id="reviewText" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <!-- Company Info -->
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fw-bold mb-3">
+                        <i class="bi bi-mortarboard-fill text-primary"></i> EduMaster
+                    </h5>
+                    <p class="text-muted mb-3">
+                        Empowering learners worldwide with quality education and skill development. Join millions of students learning new skills every day.
+                    </p>
+                    <div class="social-links mb-3">
+                        <a href="#" class="text-white me-3" aria-label="Facebook">
+                            <i class="bi bi-facebook fs-5"></i>
+                        </a>
+                        <a href="#" class="text-white me-3" aria-label="Twitter">
+                            <i class="bi bi-twitter fs-5"></i>
+                        </a>
+                        <a href="#" class="text-white me-3" aria-label="LinkedIn">
+                            <i class="bi bi-linkedin fs-5"></i>
+                        </a>
+                        <a href="#" class="text-white me-3" aria-label="Instagram">
+                            <i class="bi bi-instagram fs-5"></i>
+                        </a>
+                        <a href="#" class="text-white me-3" aria-label="YouTube">
+                            <i class="bi bi-youtube fs-5"></i>
+                        </a>
+                    </div>
+                    <div class="download-apps">
+                        <p class="small text-muted mb-2">Download Our App</p>
+                        <div class="d-flex gap-2">
+                            <a href="#" class="btn btn-sm btn-outline-light">
+                                <i class="bi bi-apple me-1"></i> App Store
+                            </a>
+                            <a href="#" class="btn btn-sm btn-outline-light">
+                                <i class="bi bi-google-play me-1"></i> Play Store
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3">Quick Links</h6>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2">
+                            <a href="index.html" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>Home
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="courses.html" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>All Courses
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="instructors.html" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>Instructors
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="about.html" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>About Us
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="contact.html" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>Contact
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="faq.html" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>FAQ
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Categories -->
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3">Categories</h6>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2">
+                            <a href="courses.html?category=web" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>Web Development
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="courses.html?category=design" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>Design
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="courses.html?category=business" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>Business
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="courses.html?category=marketing" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>Marketing
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="courses.html?category=data" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>Data Science
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="courses.html" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>View All
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3">Resources</h6>
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2">
+                            <a href="student-dashboard.html" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>Student Dashboard
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="instructor-dashboard.html" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>Teach on EduMaster
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>Blog
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>Careers
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="#" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>Affiliate Program
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="admin-dashboard.html" class="text-muted text-decoration-none">
+                                <i class="bi bi-chevron-right small me-1"></i>Admin Portal
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Contact & Newsletter -->
+                <div class="col-lg-3 col-md-6 col-12">
+                    <h6 class="fw-bold mb-3">Get in Touch</h6>
+                    <ul class="list-unstyled mb-4">
+                        <li class="mb-2 text-muted d-flex align-items-start justify-content-center justify-content-md-start">
+                            <i class="bi bi-geo-alt text-primary me-2 flex-shrink-0"></i>
+                            <span>123 Education Street, Learning City, LC 12345</span>
+                        </li>
+                        <li class="mb-2 d-flex align-items-center justify-content-center justify-content-md-start">
+                            <a href="mailto:support@edumaster.com" class="text-muted text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-envelope text-primary me-2 flex-shrink-0"></i>
+                                <span>support@edumaster.com</span>
+                            </a>
+                        </li>
+                        <li class="mb-2 d-flex align-items-center justify-content-center justify-content-md-start">
+                            <a href="tel:+15551234567" class="text-muted text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-phone text-primary me-2 flex-shrink-0"></i>
+                                <span>+1 (555) 123-4567</span>
+                            </a>
+                        </li>
+                        <li class="mb-2 text-muted d-flex align-items-center justify-content-center justify-content-md-start">
+                            <i class="bi bi-clock text-primary me-2 flex-shrink-0"></i>
+                            <span>Mon - Fri: 9:00 AM - 6:00 PM</span>
+                        </li>
+                    </ul>
+
+                    <h6 class="fw-bold mb-3">Newsletter</h6>
+                    <p class="text-muted small mb-2">Subscribe to get updates on new courses and exclusive offers.</p>
+                    <form id="newsletterForm" class="mb-3">
+                        <div class="input-group input-group-sm justify-content-center">
+                            <input type="email" class="form-control" placeholder="Enter your email" required>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-send"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <p class="small text-muted mb-0">We respect your privacy. Unsubscribe at any time.</p>
+                </div>
+            </div>
+
+            <!-- Legal & Payment -->
+            <hr class="my-4 bg-secondary">
+            <div class="row g-3 align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="d-flex flex-wrap gap-3 footer-links justify-content-center justify-content-md-start">
+                        <a href="privacy.html" class="text-muted text-decoration-none small">Privacy Policy</a>
+                        <a href="terms.html" class="text-muted text-decoration-none small">Terms & Conditions</a>
+                        <a href="refund.html" class="text-muted text-decoration-none small">Refund Policy</a>
+                        <a href="contact.html" class="text-muted text-decoration-none small">Contact Us</a>
+                        <a href="faq.html" class="text-muted text-decoration-none small">FAQ</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12 text-md-end text-center">
+                    <div class="payment-methods mb-2">
+                        <span class="small text-muted me-2">We Accept:</span>
+                        <i class="bi bi-credit-card text-muted me-2" title="Credit Cards"></i>
+                        <i class="bi bi-paypal text-muted me-2" title="PayPal"></i>
+                        <i class="bi bi-wallet2 text-muted me-2" title="Digital Wallets"></i>
+                        <span class="badge bg-success small">Secure Payments</span>
+                    </div>
+                    <p class="small text-muted mb-0">
+                        &copy; 2025 EduMaster. All rights reserved.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="text-center">
+                        <p class="small text-muted mb-0">
+                            <i class="bi bi-shield-check text-success me-1"></i>
+                            SSL Secured | 
+                            <i class="bi bi-award text-warning me-1"></i>
+                            Trusted by 5M+ Students | 
+                            <i class="bi bi-globe text-info me-1"></i>
+                            Available in 50+ Countries
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Course database
+        const coursesDatabase = [
+            {
+                id: 1,
+                title: "Complete Web Development Bootcamp",
+                subtitle: "Learn Web Development by building 50+ projects using HTML, CSS, JavaScript, React, Node, MongoDB and more!",
+                instructor: "Angela Yu",
+                instructorBio: "Angela is a developer with a passion for teaching. She's the lead instructor at the London App Brewery and has helped hundreds of thousands of students learn to code.",
+                category: "Web Development",
+                level: "Beginner",
+                rating: 4.7,
+                reviewCount: 15234,
+                students: 125000,
+                price: 89.99,
+                originalPrice: 199.99,
+                duration: "55 hours",
+                lastUpdated: "12/2024",
+                image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400",
+                previewVideo: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+                description: "This comprehensive course will take you from absolute beginner to confident web developer. You'll learn HTML, CSS, JavaScript, React, Node.js, MongoDB and much more through hands-on projects. Perfect for aspiring developers!",
+                learningPoints: [
+                    "Build 16 web development projects for your portfolio",
+                    "Work as a freelance web developer",
+                    "Master frontend development with React",
+                    "Learn backend development with Node",
+                    "Master MongoDB database",
+                    "Learn authentication & security",
+                    "Learn to use Git, GitHub, Node.js, NPM",
+                    "Create a blog application from scratch"
+                ],
+                includes: [
+                    { icon: "play-circle-fill", text: "55 hours on-demand video" },
+                    { icon: "file-text", text: "50 downloadable resources" },
+                    { icon: "infinity", text: "Full lifetime access" },
+                    { icon: "phone", text: "Access on mobile and TV" },
+                    { icon: "award", text: "Certificate of completion" }
+                ],
+                curriculum: [
+                    {
+                        title: "Section 1: Introduction",
+                        lectures: 5,
+                        duration: "45 min",
+                        items: ["Course Introduction (8:30)", "How to Get Help (5:15)", "Course Resources (10:00)"]
+                    },
+                    {
+                        title: "Section 2: HTML Fundamentals",
+                        lectures: 12,
+                        duration: "2 hours",
+                        items: ["HTML Basics (15:20)", "HTML Forms (20:10)", "HTML5 Semantic Elements (18:45)"]
+                    },
+                    {
+                        title: "Section 3: CSS Styling",
+                        lectures: 15,
+                        duration: "3 hours",
+                        items: ["CSS Basics (22:30)", "CSS Flexbox (25:15)", "CSS Grid (28:00)"]
+                    }
+                ],
+                reviews: [
+                    { name: "John Smith", rating: 5, date: "2 days ago", title: "Excellent Course!", text: "This course exceeded my expectations. The instructor explains everything clearly and the projects are practical." },
+                    { name: "Sarah Johnson", rating: 5, date: "1 week ago", title: "Best Investment", text: "Worth every penny! I learned so much and now I'm confident in my web development skills." },
+                    { name: "Mike Davis", rating: 4, date: "2 weeks ago", title: "Great Content", text: "Very comprehensive course. A few sections could be updated but overall fantastic learning experience." }
+                ]
+            }
+        ];
+
+        let currentCourse = null;
+        let selectedRating = 5;
+
+        // Get course ID from URL
+        function getCourseIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return parseInt(urlParams.get('id')) || 1;
+        }
+
+        // Load course data
+        function loadCourse() {
+            const courseId = getCourseIdFromURL();
+            currentCourse = coursesDatabase.find(c => c.id === courseId);
+            
+            if (!currentCourse) {
+                alert('Course not found!');
+                window.location.href = 'courses.html';
+                return;
+            }
+
+            // Update page title
+            document.title = currentCourse.title + ' - EduMaster';
+
+            // Populate course details
+            document.getElementById('courseCategory').textContent = currentCourse.category;
+            document.getElementById('courseTitle').textContent = currentCourse.title;
+            document.getElementById('courseSubtitle').textContent = currentCourse.subtitle;
+            document.getElementById('courseRating').textContent = currentCourse.rating;
+            document.getElementById('courseStars').textContent = '★'.repeat(Math.floor(currentCourse.rating)) + '☆'.repeat(5 - Math.floor(currentCourse.rating));
+            document.getElementById('reviewCount').textContent = currentCourse.reviewCount.toLocaleString();
+            document.getElementById('studentCount').textContent = currentCourse.students.toLocaleString();
+            document.getElementById('courseDuration').textContent = currentCourse.duration;
+            document.getElementById('courseLevel').textContent = currentCourse.level;
+            document.getElementById('instructorName').textContent = currentCourse.instructor;
+            document.getElementById('lastUpdated').textContent = currentCourse.lastUpdated;
+            document.getElementById('courseDescription').textContent = currentCourse.description;
+            document.getElementById('coursePrice').textContent = '$' + currentCourse.price;
+            document.getElementById('originalPrice').textContent = '$' + currentCourse.originalPrice;
+            document.getElementById('courseImage').src = currentCourse.image;
+            document.getElementById('previewVideo').src = currentCourse.previewVideo;
+            document.getElementById('instructorImage').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentCourse.instructor)}&size=50`;
+
+            // Calculate discount
+            const discount = Math.round(((currentCourse.originalPrice - currentCourse.price) / currentCourse.originalPrice) * 100);
+            document.getElementById('discountBadge').textContent = discount + '% OFF';
+
+            // Populate learning points
+            const learningPointsHTML = currentCourse.learningPoints.map(point => `
+                <div class="col-md-6">
+                    <p class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>${point}</p>
+                </div>
+            `).join('');
+            document.getElementById('learningPoints').innerHTML = learningPointsHTML;
+
+            // Populate course includes
+            const includesHTML = currentCourse.includes.map(item => `
+                <li class="mb-2"><i class="bi bi-${item.icon} text-primary me-2"></i>${item.text}</li>
+            `).join('');
+            document.getElementById('courseIncludes').innerHTML = includesHTML;
+
+            // Populate curriculum
+            const curriculumHTML = currentCourse.curriculum.map((section, index) => `
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button ${index === 0 ? '' : 'collapsed'}" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#section${index}">
+                            ${section.title} (${section.lectures} lectures, ${section.duration})
+                        </button>
+                    </h2>
+                    <div id="section${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}" 
+                         data-bs-parent="#curriculumAccordion">
+                        <div class="accordion-body">
+                            <ul class="list-unstyled">
+                                ${section.items.map(item => `<li class="mb-2"><i class="bi bi-play-circle me-2"></i>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('curriculumAccordion').innerHTML = curriculumHTML;
+
+            // Populate instructor details
+            document.getElementById('instructorDetail').innerHTML = `
+                <div class="d-flex align-items-start mb-4">
+                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(currentCourse.instructor)}&size=150" 
+                         alt="Instructor" class="rounded-circle me-4">
+                    <div>
+                        <h4 class="fw-bold mb-2">${currentCourse.instructor}</h4>
+                        <p class="text-muted mb-3">Lead Instructor at EduMaster</p>
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="text-warning fw-bold me-2">${currentCourse.rating}</span>
+                            <div class="rating me-2">${'★'.repeat(Math.floor(currentCourse.rating))}</div>
+                            <span class="text-muted">Instructor Rating</span>
+                        </div>
+                        <p>${currentCourse.instructorBio}</p>
+                    </div>
+                </div>
+            `;
+
+            // Populate reviews
+            renderReviews();
+        }
+
+        // Render reviews
+        function renderReviews() {
+            const reviewsHTML = currentCourse.reviews.map(review => `
+                <div class="review-card">
+                    <div class="d-flex justify-content-between mb-2">
+                        <div>
+                            <strong>${review.name}</strong>
+                            <div class="rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+                        </div>
+                        <small class="text-muted">${review.date}</small>
+                    </div>
+                    <h6 class="fw-bold">${review.title}</h6>
+                    <p class="mb-0">${review.text}</p>
+                </div>
+            `).join('');
+            document.getElementById('reviewsList').innerHTML = reviewsHTML;
+        }
+
+        // Set rating
+        function setRating(rating) {
+            selectedRating = rating;
+            document.getElementById('selectedRating').value = rating;
+            
+            const stars = document.querySelectorAll('#ratingInput i');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('bi-star');
+                    star.classList.add('bi-star-fill');
+                } else {
+                    star.classList.remove('bi-star-fill');
+                    star.classList.add('bi-star');
+                }
+            });
+        }
+
+        // Submit review
+        function submitReview(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('reviewTitle').value;
+            const text = document.getElementById('reviewText').value;
+            
+            currentCourse.reviews.unshift({
+                name: "You",
+                rating: selectedRating,
+                date: "Just now",
+                title: title,
+                text: text
+            });
+            
+            renderReviews();
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
+            modal.hide();
+            
+            // Reset form
+            document.getElementById('reviewForm').reset();
+            setRating(5);
+            
+            alert('Review submitted successfully!');
+        }
+
+        // Add to cart
+        function addToCart() {
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            
+            if (cart.find(item => item.id === currentCourse.id)) {
+                alert('Course already in cart!');
+                return;
+            }
+            
+            cart.push({
+                id: currentCourse.id,
+                title: currentCourse.title,
+                instructor: currentCourse.instructor,
+                price: currentCourse.price,
+                image: currentCourse.image
+            });
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            document.getElementById('cartCount').textContent = cart.length;
+            
+            alert('Course added to cart!');
+        }
+
+        // Add to wishlist
+        function addToWishlist() {
+            let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            
+            if (wishlist.find(item => item.id === currentCourse.id)) {
+                alert('Course already in wishlist!');
+                return;
+            }
+            
+            wishlist.push({
+                id: currentCourse.id,
+                title: currentCourse.title,
+                instructor: currentCourse.instructor,
+                price: currentCourse.price,
+                image: currentCourse.image
+            });
+            
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            alert('Course added to wishlist!');
+        }
+
+        // Share course
+        function shareArticle() {
+            if (navigator.share) {
+                navigator.share({
+                    title: currentCourse.title,
+                    text: currentCourse.subtitle,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Link copied to clipboard!');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCourse();
+            
+            // Update cart count
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            document.getElementById('cartCount').textContent = cart.length;
+        });
+    </script>
+</body>
+</html>

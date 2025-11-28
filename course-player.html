@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Player - EduMaster</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .video-container {
+            background: #000;
+        }
+        .sidebar-lectures {
+            max-height: calc(100vh - 56px);
+            overflow-y: auto;
+        }
+        .lecture-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .lecture-item:hover {
+            background-color: #e9ecef;
+        }
+        .lecture-item.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .lecture-item.completed {
+            background-color: #d1e7dd;
+        }
+        .discussion-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .accordion-button:not(.collapsed) {
+            background-color: #e7f1ff;
+            color: #0d6efd;
+        }
+        .nav-tabs .nav-link.active {
+            color: #0d6efd;
+            border-bottom: 2px solid #0d6efd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark shadow-sm fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold text-white" href="index.html">
+                <i class="bi bi-mortarboard-fill text-primary"></i> EduMaster
+            </a>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="student-dashboard.html">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Player Section -->
+    <div class="player-container" style="margin-top: 56px;">
+        <div class="row g-0">
+            <!-- Video Player -->
+            <div class="col-lg-9">
+                <div class="video-container bg-black">
+                    <div class="ratio ratio-16x9">
+                        <video id="courseVideo" class="w-100" controls>
+                            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="video-controls p-3 bg-dark text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-0" id="currentLectureTitle">Introduction to HTML</h5>
+                                <small class="text-muted" id="courseTitle">Complete Web Development Bootcamp</small>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-light" id="prevBtn" onclick="previousLecture()">
+                                    <i class="bi bi-skip-backward"></i> Previous
+                                </button>
+                                <button class="btn btn-sm btn-outline-light" id="markCompleteBtn" onclick="markComplete()">
+                                    <i class="bi bi-check-circle"></i> Mark Complete
+                                </button>
+                                <button class="btn btn-sm btn-primary" id="nextBtn" onclick="nextLecture()">
+                                    Next <i class="bi bi-skip-forward"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Info Tabs -->
+                <div class="course-info p-4 bg-white">
+                    <ul class="nav nav-tabs mb-3" id="infoTabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#overview">Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#notes">Notes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#resources">Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#discussion">Discussion</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="overview">
+                            <h6 class="fw-bold mb-2">About this lecture</h6>
+                            <p id="lectureDescription">In this lecture, we'll cover the fundamentals of HTML, including tags, elements, and basic structure.</p>
+                        </div>
+                        <div class="tab-pane fade" id="notes">
+                            <h6 class="fw-bold mb-3">My Notes</h6>
+                            <textarea class="form-control mb-3" id="notesTextarea" rows="5" placeholder="Add your notes here..."></textarea>
+                            <button class="btn btn-primary" onclick="saveNotes()">Save Notes</button>
+                            <div id="notesSaved" class="alert alert-success mt-3" style="display:none;">Notes saved successfully!</div>
+                        </div>
+                        <div class="tab-pane fade" id="resources">
+                            <h6 class="fw-bold mb-3">Resources</h6>
+                            <ul class="list-group" id="resourcesList">
+                                <li class="list-group-item">
+                                    <i class="bi bi-file-pdf text-danger me-2"></i>
+                                    <a href="#" class="text-decoration-none">HTML Cheat Sheet.pdf</a>
+                                    <button class="btn btn-sm btn-outline-primary float-end">Download</button>
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="bi bi-link-45deg text-primary me-2"></i>
+                                    <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" class="text-decoration-none">HTML Documentation</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-pane fade" id="discussion">
+                            <h6 class="fw-bold mb-3">Discussion</h6>
+                            <div class="mb-3">
+                                <textarea class="form-control" id="discussionInput" rows="2" placeholder="Ask a question..."></textarea>
+                                <button class="btn btn-primary btn-sm mt-2" onclick="postDiscussion()">Post</button>
+                            </div>
+                            <div id="discussionList">
+                                <div class="discussion-item">
+                                    <div class="d-flex">
+                                        <img src="https://ui-avatars.com/api/?name=John+Doe&size=40" alt="User" class="rounded-circle me-2">
+                                        <div>
+                                            <strong>John Doe</strong>
+                                            <small class="text-muted ms-2">2 hours ago</small>
+                                            <p class="mb-0 mt-1">Great explanation! This helped me understand the concept better.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lecture Sidebar -->
+            <div class="col-lg-3 sidebar-lectures bg-light">
+                <div class="p-3">
+                    <h6 class="fw-bold mb-3">Course Content</h6>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" id="progressBar" style="width: 0%">0% Complete</div>
+                    </div>
+                    <div class="accordion" id="courseSections">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Course data structure
+        const courseData = {
+            id: 1,
+            title: "Complete Web Development Bootcamp",
+            sections: [
+                {
+                    id: 1,
+                    title: "Section 1: Introduction",
+                    duration: "45 min",
+                    lectures: [
+                        { 
+                            id: 1, 
+                            title: "Course Introduction", 
+                            duration: "8:30", 
+                            videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                            description: "Welcome to the course! In this lecture, we'll give you an overview of what you'll learn.",
+                            completed: false
+                        },
+                        { 
+                            id: 2, 
+                            title: "How to Get Help", 
+                            duration: "5:15", 
+                            videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+                            description: "Learn how to get help when you're stuck and make the most of the course community.",
+                            completed: false
+                        },
+                        { 
+                            id: 3, 
+                            title: "HTML Basics", 
+                            duration: "15:20", 
+                            videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                            description: "Introduction to HTML fundamentals, tags, and basic structure.",
+                            completed: false
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    title: "Section 2: HTML Fundamentals",
+                    duration: "2 hours",
+                    lectures: [
+                        { 
+                            id: 4, 
+                            title: "HTML Forms", 
+                            duration: "20:10", 
+                            videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+                            description: "Learn how to create interactive forms using HTML.",
+                            completed: false
+                        },
+                        { 
+                            id: 5, 
+                            title: "Semantic HTML", 
+                            duration: "18:45", 
+                            videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+                            description: "Understanding semantic HTML5 elements and their importance.",
+                            completed: false
+                        }
+                    ]
+                },
+                {
+                    id: 3,
+                    title: "Section 3: CSS Fundamentals",
+                    duration: "3 hours",
+                    lectures: [
+                        { 
+                            id: 6, 
+                            title: "CSS Basics", 
+                            duration: "22:30", 
+                            videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+                            description: "Introduction to CSS styling, selectors, and properties.",
+                            completed: false
+                        },
+                        { 
+                            id: 7, 
+                            title: "CSS Flexbox", 
+                            duration: "25:15", 
+                            videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+                            description: "Master CSS Flexbox for flexible layouts.",
+                            completed: false
+                        }
+                    ]
+                }
+            ]
+        };
+
+        let currentLectureId = 1;
+        let completedLectures = JSON.parse(localStorage.getItem('completedLectures_' + courseData.id) || '[]');
+
+        // Initialize the player
+        function initPlayer() {
+            renderSections();
+            loadLecture(currentLectureId);
+            updateProgress();
+        }
+
+        // Render course sections
+        function renderSections() {
+            const container = document.getElementById('courseSections');
+            container.innerHTML = courseData.sections.map((section, sectionIndex) => `
+                <div class="accordion-item border-0 mb-2">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button ${sectionIndex === 0 ? '' : 'collapsed'}" type="button" 
+                                data-bs-toggle="collapse" data-bs-target="#section${section.id}">
+                            <div>
+                                <div class="fw-bold small">${section.title}</div>
+                                <small class="text-muted">${section.lectures.length} lectures • ${section.duration}</small>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="section${section.id}" class="accordion-collapse collapse ${sectionIndex === 0 ? 'show' : ''}" 
+                         data-bs-parent="#courseSections">
+                        <div class="accordion-body p-0">
+                            <div class="list-group list-group-flush">
+                                ${section.lectures.map(lecture => `
+                                    <a href="#" class="list-group-item list-group-item-action lecture-item ${lecture.id === currentLectureId ? 'active' : ''} ${completedLectures.includes(lecture.id) ? 'completed' : ''}" 
+                                       data-lecture="${lecture.id}" onclick="loadLecture(${lecture.id}); return false;">
+                                        <div class="d-flex justify-content-between">
+                                            <span>
+                                                <i class="bi ${completedLectures.includes(lecture.id) ? 'bi-check-circle-fill' : 'bi-play-circle'} me-2"></i>
+                                                ${lecture.title}
+                                            </span>
+                                            ${completedLectures.includes(lecture.id) ? '<span class="badge bg-success"><i class="bi bi-check"></i></span>' : ''}
+                                        </div>
+                                        <small class="text-muted d-block mt-1">${lecture.duration}</small>
+                                    </a>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load a specific lecture
+        function loadLecture(lectureId) {
+            currentLectureId = lectureId;
+            const lecture = findLecture(lectureId);
+            
+            if (!lecture) return;
+
+            // Update video
+            const video = document.getElementById('courseVideo');
+            video.src = lecture.videoUrl;
+            video.load();
+
+            // Update lecture info
+            document.getElementById('currentLectureTitle').textContent = lecture.title;
+            document.getElementById('lectureDescription').textContent = lecture.description;
+
+            // Update active state in sidebar
+            document.querySelectorAll('.lecture-item').forEach(item => {
+                item.classList.remove('active');
+                if (parseInt(item.dataset.lecture) === lectureId) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Load saved notes
+            const savedNotes = localStorage.getItem('notes_' + courseData.id + '_' + lectureId);
+            document.getElementById('notesTextarea').value = savedNotes || '';
+
+            // Update button states
+            updateNavigationButtons();
+        }
+
+        // Find lecture by ID
+        function findLecture(lectureId) {
+            for (let section of courseData.sections) {
+                const lecture = section.lectures.find(l => l.id === lectureId);
+                if (lecture) return lecture;
+            }
+            return null;
+        }
+
+        // Get all lectures in order
+        function getAllLectures() {
+            return courseData.sections.flatMap(section => section.lectures);
+        }
+
+        // Next lecture
+        function nextLecture() {
+            const allLectures = getAllLectures();
+            const currentIndex = allLectures.findIndex(l => l.id === currentLectureId);
+            if (currentIndex < allLectures.length - 1) {
+                loadLecture(allLectures[currentIndex + 1].id);
+            }
+        }
+
+        // Previous lecture
+        function previousLecture() {
+            const allLectures = getAllLectures();
+            const currentIndex = allLectures.findIndex(l => l.id === currentLectureId);
+            if (currentIndex > 0) {
+                loadLecture(allLectures[currentIndex - 1].id);
+            }
+        }
+
+        // Mark lecture as complete
+        function markComplete() {
+            if (!completedLectures.includes(currentLectureId)) {
+                completedLectures.push(currentLectureId);
+                localStorage.setItem('completedLectures_' + courseData.id, JSON.stringify(completedLectures));
+                renderSections();
+                updateProgress();
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const allLectures = getAllLectures();
+            const progress = (completedLectures.length / allLectures.length) * 100;
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = Math.round(progress) + '% Complete';
+        }
+
+        // Update navigation buttons
+        function updateNavigationButtons() {
+            const allLectures = getAllLectures();
+            const currentIndex = allLectures.findIndex(l => l.id === currentLectureId);
+            
+            document.getElementById('prevBtn').disabled = currentIndex === 0;
+            document.getElementById('nextBtn').disabled = currentIndex === allLectures.length - 1;
+        }
+
+        // Save notes
+        function saveNotes() {
+            const notes = document.getElementById('notesTextarea').value;
+            localStorage.setItem('notes_' + courseData.id + '_' + currentLectureId, notes);
+            
+            const alert = document.getElementById('notesSaved');
+            alert.style.display = 'block';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 3000);
+        }
+
+        // Post discussion
+        function postDiscussion() {
+            const input = document.getElementById('discussionInput');
+            const text = input.value.trim();
+            
+            if (!text) return;
+
+            const discussionList = document.getElementById('discussionList');
+            const newPost = document.createElement('div');
+            newPost.className = 'discussion-item';
+            newPost.innerHTML = `
+                <div class="d-flex">
+                    <img src="https://ui-avatars.com/api/?name=You&size=40" alt="User" class="rounded-circle me-2">
+                    <div>
+                        <strong>You</strong>
+                        <small class="text-muted ms-2">Just now</small>
+                        <p class="mb-0 mt-1">${text}</p>
+                    </div>
+                </div>
+            `;
+            discussionList.insertBefore(newPost, discussionList.firstChild);
+            input.value = '';
+        }
+
+        // Auto-mark complete when video ends
+        document.getElementById('courseVideo').addEventListener('ended', function() {
+            markComplete();
+            // Auto-play next lecture
+            setTimeout(() => {
+                const allLectures = getAllLectures();
+                const currentIndex = allLectures.findIndex(l => l.id === currentLectureId);
+                if (currentIndex < allLectures.length - 1) {
+                    nextLecture();
+                }
+            }, 1000);
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initPlayer);
+    </script>
+</body>
+</html>
